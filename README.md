@@ -1,7 +1,7 @@
-#JavaScript 30 Challenge
-x
-##Link to course
+# JavaScript 30 Challenge
+
+## Link to course
 https://javascript30.com/
 
-##Guidlines
+## Guidlines
 - Create a seperate branch for your own commits
