@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Drum Kit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+  <div class="keys">
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="83" class="key">
+      <kbd>S</kbd>
+      <span class="sound">hihat</span>
+    </div>
+    <div data-key="68" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="70" class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="71" class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="72" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="74" class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="75" class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="76" class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <audio data-key="65" data-letra="a" src="sounds/clap.wav"></audio>
+  <audio data-key="83" data-letra="s" src="sounds/hihat.wav"></audio>
+  <audio data-key="68" data-letra="d" src="sounds/kick.wav"></audio>
+  <audio data-key="70" data-letra="f" src="sounds/openhat.wav"></audio>
+  <audio data-key="71" data-letra="g" src="sounds/boom.wav"></audio>
+  <audio data-key="72" data-letra="h" src="sounds/ride.wav"></audio>
+  <audio data-key="74" data-letra="j" src="sounds/snare.wav"></audio>
+  <audio data-key="75" data-letra="k" src="sounds/tom.wav"></audio>
+  <audio data-key="76" data-letra="l" src="sounds/tink.wav"></audio>
+
+<script>
+  window.addEventListener('keydown', function(evt){
+    let key    = evt.key.toLocaleLowerCase(),
+        audio  = document.querySelector(`audio[data-letra="${key}"]`),
+        letras =  Array.from(document.querySelectorAll('audio')).map((element) => element.dataset.letra);
+    if(!(letras.indexOf(key) > -1)) return;
+    audio.currentTime = 0;
+    audio.play();
+  })
+</script>
+
+
+</body>
+</html>
