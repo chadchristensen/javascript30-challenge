@@ -61,8 +61,13 @@
   window.addEventListener('keydown', function(evt){
     let key    = evt.key.toLocaleLowerCase(),
         audio  = document.querySelector(`audio[data-letra="${key}"]`),
+        btnKey = document.querySelector(`div[data-key="${evt.keyCode}"]`),
         letras =  Array.from(document.querySelectorAll('audio')).map((element) => element.dataset.letra);
     if(!(letras.indexOf(key) > -1)) return;
+    btnKey.classList.add('playing');
+    setTimeout(() => {
+      btnKey.classList.remove('playing');
+    }, 100);
     audio.currentTime = 0;
     audio.play();
   })
