@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Drum Kit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- keycode.info - website that tells the key code for each key-->
+  <div class="keys">
+    <!-- data-key is a data attribute. All data attributes starts with "data-"-->
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="83" class="key">
+      <kbd>S</kbd>
+      <span class="sound">hihat</span>
+    </div>
+    <div data-key="68" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="70" class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="71" class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="72" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="74" class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="75" class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="76" class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <audio data-key="65" src="sounds/clap.wav"></audio>
+  <audio data-key="83" src="sounds/hihat.wav"></audio>
+  <audio data-key="68" src="sounds/kick.wav"></audio>
+  <audio data-key="70" src="sounds/openhat.wav"></audio>
+  <audio data-key="71" src="sounds/boom.wav"></audio>
+  <audio data-key="72" src="sounds/ride.wav"></audio>
+  <audio data-key="74" src="sounds/snare.wav"></audio>
+  <audio data-key="75" src="sounds/tom.wav"></audio>
+  <audio data-key="76" src="sounds/tink.wav"></audio>
+
+<script>
+  
+  function playSound(e) {
+    //e is the event object. Within the event object, we want to listen for the keyCode. So e.keyCode is the key code number
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); //data-key = attribute selector; ${} = ES6 template string. So we have to use back ticks.; Basically we have an event listener matching the data key attribute to the event key code. This will return the corresponding audio from line 51-59
+    const key =document.querySelector(`.key[data-key="${e.keyCode}"]`); //.key corresponds to the key class line11-45.
+    if(!audio) return; //if no matching audio is found
+    audio.currentTime=0; //rewind to the start. So you can play a key over and over again.
+    audio.play(); //if matching audio is found, play it
+    key.classList.add('playing'); //same thing as saying key.addClass('Playing') in jQuery. This will add the playing class when you hit a key. Which will trigger the playing styling on line 34 of style.css
+  }
+  
+  function removeTransition(e) {
+    if (e.propertyName !== 'transform') return; //skip it if it's not a transform. Transform corresponds to line 35 of the style.css. We're just picking transform because we want to listen to one transitionend (usually the longest one) and randomly picked transform. The other propertyName we can listen to are line 36 and 37 of style.css
+    this.classList.remove('playing'); //this is whatever gets call against it. So this stands for the key object below (line 79)
+  }
+  
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition)); //loop through all keys to listen to when transition ends then fire the removeTransition function defined in line 73
+  
+  window.addEventListener('keydown', playSound);
+</script>
+
+
+</body>
+</html>
