@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+const canvas = document.querySelector('#draw'); //grab the canvas and store in canvas variable
+const ctx = canvas.getContext('2d'); //grabbing the 2d context
+canvas.width = window.innerWidth; //size up the width to the width ofthe window
+canvas.height = window.innerHeight; //size up the width to the width ofthe window
+ctx.strokeStyle = '#BADA55';
+ctx.lineJoin = 'round'; //Rounds off the corners of a shape by filling an additional sector of disc centered at the common endpoint of connected segments. 
+ctx.lineCap = 'round'; //The ends of lines are rounded.
+ctx.lineWidth = 100;
+ctx.globalCompositeOperation = 'multiply'; //blend colors together
+
+let isDrawing = false;  //defaults to false when the mouse is not down
+let lastX = 0; //creating starting point
+let lastY = 0; //ending point
+let hue = 0;
+let direction = true;
+
+function draw(e) {
+  if(!isDrawing) return; //stop the function from running when they are not moused down
+  ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+  ctx.beginPath();
+  //start from
+  ctx.moveTo(lastX, lastY);
+  //go to
+  ctx.lineTo(e.offsetX, e.offsetY); //these values are properties of the event object depending on where your mouse is
+  ctx.stroke();
+  //reset the position
+  lastX = e.offsetX; //or using ES6: [lastX, lastY] = [e.offsetX, e.offsetY];
+  lastY = e.offsetY;
+  hue++;//incrementing the hue so we get different colors
+  if(hue >= 360) {
+    hue = 0; //resetting the hue so it doesn't go above 360
+  }
+  if(ctx.lineWidth >=300 || ctx.lineWidth <=1) {
+    direction = !direction; //flip the direction
+  }
+  if(direction) { //depending onthe direction we increment or decrement
+    ctx.linewidth++;
+  } else {
+    ctx.lineWidth--;
+  }
+}
+
+canvas.addEventListener('mousedown', (e) => {
+  isDrawing = true;
+  [lastX, lastY] = [e.offsetX, e.offsetY]; //reseting the position everytime the mousedown event is called
+});
+
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', () => isDrawing = false);
+canvas.addEventListener('mouseout', () => isDrawing = false);
+
+
+</script>
+
+<style>
+  html, body {
+    margin:0;
+  }
+</style>
+
+</body>
+</html>
